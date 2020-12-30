@@ -1,4 +1,4 @@
-# PAUT_AxialWedge
+# PAUT_CircumferentialWedge
 
 * <code>data</code> folder contains file <code>data.in</code> with wedge/specimen/inspection parameter written in format given by <code>format.in</code> file.
 
@@ -8,10 +8,11 @@
 
 # Remarks
 
-* Wedge geometry parameters follow the usual convention. Nevertheless, <code>doc/WedgeGeometry.pdf</code> defines the wedge geometry uniquely. The only new
-parameter introduced is the "Wedge radius".
+* Wedge geometry parameters follow the usual convention. <strike>Nevertheless, <code>doc/WedgeGeometry.pdf</code> defines the wedge geometry uniquely.</strike>
+The only new parameter introduced is the "Wedge radius".
 
-* Notice that parameter: "Height at the middle of the first element" might be defined in many different ways. The one selected is depicted in <code>doc/WedgeGeometry.pdf</code>.
+* Notice that parameter: "Height at the middle of the first element" might be defined in many different ways.
+<strike>The one selected is depicted in <code>doc/WedgeGeometry.pdf</code></strike>.
 
 * Only dual linear-array probes are supported for now, i.e. matrix probes are not supported although one can easily generalize the code to matrix probes.
 
