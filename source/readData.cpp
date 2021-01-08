@@ -14,41 +14,53 @@ std::tuple<Wedge,Specimen,LawFileParameters,SectorScanParameters> readData( std:
             lines.emplace_back(line);
 
 
-
-    double          ProbeSeparation;
-    double          PrimaryAxisPitch;
-    double          PrimaryAxisSize;
-    double          SecondaryAxisSize;
-    unsigned short  NoElementsOnPrimaryAxis;
-    double          RefractedAngleStart;
-    double          RefractedAngleEnd;
-    double          RefractedAngleResolution;
-    double          SpecimenUltrasoundSpeed;
-    double          HeightAtTheMiddleOfTheFirstElement;
-    double          WedgeUltrasonicSpeed;
-    double          PrimaryAxisOffsetOfTheMiddleOfTheFirstElement;
-    double          SecondaryAxisOffsetOfTheMiddleOfTheFirstElement;
-    double          WedgeWidth;
-    double          RoofAngle;
-    double          WedgeLength;
-    double          WedgeAngle;
-    double          WedgeRadius;
-    std::string     Version;
-    unsigned long   Frequency;
-    unsigned long   Cycles;
-    unsigned long   SumGain;
-    unsigned long   Mode;
-    unsigned long   Filter;
-    unsigned long   T_First;
-    unsigned long   R_First;
-    unsigned long   Scan_Offset;
-    unsigned long   Index_Offset;
-    unsigned long   FL_Gain;
-    unsigned long   Amplitude;
-    unsigned long   P_width;
+    Wedge::WedgeType wedgeType;
+    double           ProbeSeparation;
+    double           PrimaryAxisPitch;
+    double           PrimaryAxisSize;
+    double           SecondaryAxisSize;
+    unsigned short   NoElementsOnPrimaryAxis;
+    double           RefractedAngleStart;
+    double           RefractedAngleEnd;
+    double           RefractedAngleResolution;
+    double           SpecimenUltrasoundSpeed;
+    double           HeightAtTheMiddleOfTheFirstElement;
+    double           WedgeUltrasonicSpeed;
+    double           PrimaryAxisOffsetOfTheMiddleOfTheFirstElement;
+    double           SecondaryAxisOffsetOfTheMiddleOfTheFirstElement;
+    double           WedgeWidth;
+    double           RoofAngle;
+    double           WedgeLength;
+    double           WedgeAngle;
+    double           WedgeRadius;
+    std::string      Version;
+    unsigned long    Frequency;
+    unsigned long    Cycles;
+    unsigned long    SumGain;
+    unsigned long    Mode;
+    unsigned long    Filter;
+    unsigned long    T_First;
+    unsigned long    R_First;
+    unsigned long    Scan_Offset;
+    unsigned long    Index_Offset;
+    unsigned long    FL_Gain;
+    unsigned long    Amplitude;
+    unsigned long    P_width;
     
+    if      ( lines[0] == std::string("Axial")           )
+    {
+        wedgeType = Wedge::WedgeType::Axial;
+    }
+    else if ( lines[0] == std::string("Circumferential") )
+    {
+        wedgeType = Wedge::WedgeType::Circumferential;
+    }
+    else
+    {
+        throw std::logic_error("Wedge type must be \"Axial\" or \"Circumferential\"!");
+    }
 
-    unsigned int i = 0;
+    unsigned int i = 1;
     std::stringstream( lines[i++] ) >> ProbeSeparation;
     std::stringstream( lines[i++] ) >> PrimaryAxisPitch;
     std::stringstream( lines[i++] ) >> PrimaryAxisSize;
@@ -85,7 +97,8 @@ std::tuple<Wedge,Specimen,LawFileParameters,SectorScanParameters> readData( std:
 
 
 
-    Wedge wedge( ProbeSeparation,
+    Wedge wedge( wedgeType,
+                 ProbeSeparation,
                  PrimaryAxisPitch,
                  PrimaryAxisSize,
                  SecondaryAxisSize,

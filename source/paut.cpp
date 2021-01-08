@@ -4,38 +4,44 @@
 #include "paut.hh"
 
 
+std::map< Wedge::WedgeType , std::string > Wedge::WedgeTypeNames = 
+{ 
+    { Wedge::WedgeType::Axial            , "Axial"            } ,
+    { Wedge::WedgeType::Circumferential  , "Circumferential"  }
+};
 
-
-Wedge::Wedge(   double          ProbeSeparation                                 ,
-                double          PrimaryAxisPitch                                ,
-                double          PrimaryAxisSize                                 ,
-                double          SecondaryAxisSize                               ,
-                unsigned short  NoElementsOnPrimaryAxis                         ,
-                double          HeightAtTheMiddleOfTheFirstElement              ,
-                double          UltrasonicSpeed                                 ,
-                double          PrimaryAxisOffsetOfTheMiddleOfTheFirstElement   ,
-                double          SecondaryAxisOffsetOfTheMiddleOfTheFirstElement ,
-                double          WedgeWidth                                      ,
-                double          RoofAngle                                       ,
-                double          WedgeLength                                     ,
-                double          WedgeAngle                                      ,
-                double          WedgeRadius                                     
+Wedge::Wedge(   Wedge::WedgeType  wedgeType                                       ,
+                double            ProbeSeparation                                 ,
+                double            PrimaryAxisPitch                                ,
+                double            PrimaryAxisSize                                 ,
+                double            SecondaryAxisSize                               ,
+                unsigned short    NoElementsOnPrimaryAxis                         ,
+                double            HeightAtTheMiddleOfTheFirstElement              ,
+                double            UltrasonicSpeed                                 ,
+                double            PrimaryAxisOffsetOfTheMiddleOfTheFirstElement   ,
+                double            SecondaryAxisOffsetOfTheMiddleOfTheFirstElement ,
+                double            WedgeWidth                                      ,
+                double            RoofAngle                                       ,
+                double            WedgeLength                                     ,
+                double            WedgeAngle                                      ,
+                double            WedgeRadius                                     
              )
 {
     constexpr double pi = 4.0 * atan(1.0);
     
-    m_N     = NoElementsOnPrimaryAxis;
-    m_e     = PrimaryAxisPitch - PrimaryAxisSize;
-    m_w     = SecondaryAxisSize;
-    m_pitch = PrimaryAxisPitch;
-    m_a     = SecondaryAxisOffsetOfTheMiddleOfTheFirstElement - m_w/2.0;
-    m_b     = PrimaryAxisOffsetOfTheMiddleOfTheFirstElement - (m_pitch-m_e)/2.0;
-    m_omega = WedgeAngle/180.0 * pi;
-    m_roof  = RoofAngle /180.0 * pi;
-    m_L     = WedgeLength;
-    m_W     = WedgeWidth;
-    m_R     = WedgeRadius;
-    m_c     = UltrasonicSpeed;
+    m_WedgeType  = wedgeType;
+    m_N          = NoElementsOnPrimaryAxis;
+    m_e          = PrimaryAxisPitch - PrimaryAxisSize;
+    m_w          = SecondaryAxisSize;
+    m_pitch      = PrimaryAxisPitch;
+    m_a          = SecondaryAxisOffsetOfTheMiddleOfTheFirstElement - m_w/2.0;
+    m_b          = PrimaryAxisOffsetOfTheMiddleOfTheFirstElement - (m_pitch-m_e)/2.0;
+    m_omega      = WedgeAngle/180.0 * pi;
+    m_roof       = RoofAngle /180.0 * pi;
+    m_L          = WedgeLength;
+    m_W          = WedgeWidth;
+    m_R          = WedgeRadius;
+    m_c          = UltrasonicSpeed;
 
     m_d = -2.0*m_W + ProbeSeparation + 2.0*std::cos(m_roof)*( m_a + m_w/2.0 );
     m_H = + HeightAtTheMiddleOfTheFirstElement
@@ -139,22 +145,25 @@ std::ostream & operator << ( std::ostream & out , Wedge const & wedge )
 {
     constexpr double pi = 4.0 * atan(1.0);
 
+    std::string wedgeType = Wedge::WedgeTypeNames[ wedge.m_WedgeType ];
+
     out << "Wedge " << std::endl;
     out << "["      << std::endl;
-    out << "\t\t"   << "m_N     : " << "\t" << wedge.m_N              << " []" << std::endl;
-    out << "\t\t"   << "m_e     : " << "\t" << wedge.m_e              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_w     : " << "\t" << wedge.m_w              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_pitch : " << "\t" << wedge.m_pitch          << " [mm]" << std::endl;
-    out << "\t\t"   << "m_a     : " << "\t" << wedge.m_a              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_b     : " << "\t" << wedge.m_b              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_omega : " << "\t" << wedge.m_omega/pi*180.0 << " [deg]" << std::endl;
-    out << "\t\t"   << "m_roof  : " << "\t" << wedge.m_roof/pi*180.0  << " [deg]" << std::endl;
-    out << "\t\t"   << "m_L     : " << "\t" << wedge.m_L              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_W     : " << "\t" << wedge.m_W              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_R     : " << "\t" << wedge.m_R              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_c     : " << "\t" << wedge.m_c              << " [m/s]" << std::endl;
-    out << "\t\t"   << "m_d     : " << "\t" << wedge.m_d              << " [mm]" << std::endl;
-    out << "\t\t"   << "m_H     : " << "\t" << wedge.m_H              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_WedgeType : " << "\t" << wedgeType              << " []" << std::endl;
+    out << "\t\t"   << "m_N         : " << "\t" << wedge.m_N              << " []" << std::endl;
+    out << "\t\t"   << "m_e         : " << "\t" << wedge.m_e              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_w         : " << "\t" << wedge.m_w              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_pitch     : " << "\t" << wedge.m_pitch          << " [mm]" << std::endl;
+    out << "\t\t"   << "m_a         : " << "\t" << wedge.m_a              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_b         : " << "\t" << wedge.m_b              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_omega     : " << "\t" << wedge.m_omega/pi*180.0 << " [deg]" << std::endl;
+    out << "\t\t"   << "m_roof      : " << "\t" << wedge.m_roof/pi*180.0  << " [deg]" << std::endl;
+    out << "\t\t"   << "m_L         : " << "\t" << wedge.m_L              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_W         : " << "\t" << wedge.m_W              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_R         : " << "\t" << wedge.m_R              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_c         : " << "\t" << wedge.m_c              << " [m/s]" << std::endl;
+    out << "\t\t"   << "m_d         : " << "\t" << wedge.m_d              << " [mm]" << std::endl;
+    out << "\t\t"   << "m_H         : " << "\t" << wedge.m_H              << " [mm]" << std::endl;
     out << "]"      << std::endl;
 
     return out;

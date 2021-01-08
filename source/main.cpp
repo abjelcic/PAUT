@@ -20,14 +20,14 @@ int main( int argc , char * argv[] )
         {
             auto const [ wedge , specimen , lawFileParameters , sectorScanParameters ] = readData( dataStream );
             dataStream.close();
-
+          
             DEBUG_MSG( wedge                );
             DEBUG_MSG( specimen             );
             DEBUG_MSG( lawFileParameters    );
             DEBUG_MSG( sectorScanParameters );
 
-
-            std::string outLawFile = "./out/CircumferentialProbe.law";
+           
+            std::string outLawFile = "./out/" +  Wedge::WedgeTypeNames[ wedge.m_WedgeType ] + "Probe.law";
             std::ofstream outLawStream( outLawFile , std::ios::out );
 	        if( !outLawStream.is_open()  )
                 throw std::runtime_error( "Opening file: \"" + outLawFile + "\" failed." );

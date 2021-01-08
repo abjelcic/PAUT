@@ -38,9 +38,20 @@ std::vector< std::vector< Vec<double,3> > > sourcePoints( Wedge       const & we
                                   }
                                 );
 
-        auto const P =   Vec<double,3>( { W + 0.5*d , 0.0 , H + R - std::sqrt( R*R - (L/2)*(L/2) ) } )
-                       + ( b+(i-1)*pitch ) * e1
-                       +                a  * e2;
+        Vec<double,3> P;
+        if( wedge.m_WedgeType == Wedge::WedgeType::Axial )
+        {
+            P =   Vec<double,3>( { W + 0.5*d , 0.0 , H + R*( 1 - std::cos( std::asin(( W + 0.5*d )/R) ) ) } )
+                + ( b+(i-1)*pitch ) * e1
+                +                a  * e2;
+        }
+        else
+        {
+            P =   Vec<double,3>( { W + 0.5*d , 0.0 , H + R - std::sqrt( R*R - (L/2)*(L/2) ) } )
+                + ( b+(i-1)*pitch ) * e1
+                +                a  * e2;          
+        }
+        
 
 
         std::vector< Vec<double,3> > Sources_i;
@@ -64,3 +75,5 @@ std::vector< std::vector< Vec<double,3> > > sourcePoints( Wedge       const & we
 
     return Sources;
 }
+
+

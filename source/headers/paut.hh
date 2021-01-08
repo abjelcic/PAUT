@@ -11,22 +11,33 @@
 
 struct Wedge
 {
-    unsigned short  m_N;        //[]
-    double          m_e;        //[mm]
-    double          m_w;        //[mm]
-    double          m_pitch;    //[mm]
-    double          m_a;        //[mm]
-    double          m_b;        //[mm]
-    double          m_omega;    //[rad]
-    double          m_roof;     //[rad]
-    double          m_L;        //[mm]
-    double          m_W;        //[mm]
-    double          m_R;        //[mm]
-    double          m_c;        //[m/s]
-    double          m_d;        //[mm]
-    double          m_H;        //[mm]
+    enum class WedgeType
+    {
+        Axial,
+        Circumferential
+    };
 
-    Wedge(  double          ProbeSeparation                                 , //[mm]
+    static std::map< WedgeType , std::string > WedgeTypeNames;
+
+
+    WedgeType       m_WedgeType; //[Axial/Circumferential]
+    unsigned short  m_N;         //[]
+    double          m_e;         //[mm]
+    double          m_w;         //[mm]
+    double          m_pitch;     //[mm]
+    double          m_a;         //[mm]
+    double          m_b;         //[mm]
+    double          m_omega;     //[rad]
+    double          m_roof;      //[rad]
+    double          m_L;         //[mm]
+    double          m_W;         //[mm]
+    double          m_R;         //[mm]
+    double          m_c;         //[m/s]
+    double          m_d;         //[mm]
+    double          m_H;         //[mm]
+
+    Wedge(  WedgeType       wedgeType                                       , //[Axial/Circumferential]
+            double          ProbeSeparation                                 , //[mm]
             double          PrimaryAxisPitch                                , //[mm]
             double          PrimaryAxisSize                                 , //[mm]
             double          SecondaryAxisSize                               , //[mm]
@@ -123,7 +134,8 @@ void writeLawFile( Wedge                const & wedge                ,
                    std::ofstream              & outLawStream            
                   );
 
-Vec<double,3> solveCylSnell( double                c_wedge    ,
+Vec<double,3> solveCylSnell( Wedge::WedgeType      wedgeType  ,
+                             double                c_wedge    ,
                              double                c_specimen ,
                              double                Radius     ,
                              double                Length     ,
