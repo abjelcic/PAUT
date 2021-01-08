@@ -1,4 +1,4 @@
-# PAUT_CircumferentialWedge
+# PAUT
 
 * <code>data</code> folder contains file <code>data.in</code> with wedge/specimen/inspection parameter written in format given by <code>format.in</code> file.
 
