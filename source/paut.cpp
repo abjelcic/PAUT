@@ -125,15 +125,14 @@ SectorScanParameters::SectorScanParameters( SectorScanParameters::FocusingType  
     m_RefractedAngleResolution  = RefractedAngleResolution  / 180.0 * pi;
 
 
-    if( FocType != SectorScanParameters::FocusingType::AutoFocusing )
-        throw std::runtime_error("Only supported type of focusing: Auto focus.");
-
-    if( std::abs(RefractedAngleStart) > 90.0    ||
-        std::abs(RefractedAngleEnd) > 90.0    ||
-        RefractedAngleStart > RefractedAngleEnd ||
-        RefractedAngleResolution < 0.0
-        )
+    if( std::abs(RefractedAngleStart) > 90.0              ||
+        std::abs(RefractedAngleEnd)   > 90.0              ||
+        RefractedAngleStart           > RefractedAngleEnd ||
+        RefractedAngleResolution      < 0.0
+       )
+    {
         throw std::logic_error("Invalid refracted angle boundaries.");
+    }
 
     return;
 }
